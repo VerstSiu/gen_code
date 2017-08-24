@@ -1,0 +1,14 @@
+import rules little_camel_case com.ijoic.gen_code.rules.LittleCamelCase
+import rules big_camel_case com.ijoic.gen_code.rules.BigCamelCase
+
+add indent 2
+
+//
+/**
+ * Set {$param_name}
+ *
+ * @param {$param_name.little_camel_case} {$param_name}
+ */
+public void set{$param_name.big_camel_case}({$param_type} {$param_name.little_camel_case}) {
+  this.{$param_name.little_camel_case} = {$param_name.little_camel_case};
+}
