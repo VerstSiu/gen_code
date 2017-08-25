@@ -9,7 +9,7 @@ import java.util.Scanner;
  * @author VerstSiu verstsiu@126.com
  * @version 1.0
  */
-public class ParseEngine {
+final class ParseEngine {
 
   private static final String COMMAND_RULE = "R";
   private static final String COMMAND_INDENT = "I";
@@ -30,7 +30,7 @@ public class ParseEngine {
    *
    * @param is input stream.
    */
-  public static Template loadTemplate(InputStream is) {
+  static Template loadTemplate(InputStream is) {
     if (is == null) {
       return null;
     }
@@ -115,7 +115,7 @@ public class ParseEngine {
    *
    * @param is input stream.
    */
-  public static GenParams loadParams(InputStream is) {
+  static GenParams loadParams(InputStream is) {
     if (is == null) {
       return null;
     }
@@ -126,8 +126,9 @@ public class ParseEngine {
 
     boolean paramStart = false;
     String[] runParams;
-    String paramValues[];
-    boolean multiFlags[];
+    String paramValues[][];
+    String valueSegments[];
+    String paramValue;
     int segmentSize;
 
     String wordSeparator = DEFAULT_WORD_SEPARATOR;
@@ -176,22 +177,25 @@ public class ParseEngine {
 
       } else {
         // append template content.
-        paramValues = lineContent.split(PARAM_SEGMENT_SEPARATOR);
-        segmentSize = paramValues.length;
+        valueSegments = lineContent.split(PARAM_SEGMENT_SEPARATOR);
+        segmentSize = valueSegments.length;
 
         if (segmentSize > 0) {
-          multiFlags = new boolean[segmentSize];
+          paramValues = new String[segmentSize][];
 
           for (int i = 0; i < segmentSize; ++i) {
-            multiFlags[i] = FormatUtils.containsText(paramValues[i], wordSeparator);
+            paramValue = valueSegments[i];
+
+            if (paramValue != null && !paramValue.isEmpty() && !placeHolder.equals(paramValue)) {
+              paramValues[i] = paramValue.split(wordSeparator);
+            }
           }
-          params.addParamValues(paramValues, multiFlags);
+          params.addParamValues(paramValues);
         }
       }
     }
 
     if (params.size() > 0) {
-      params.setWordSeparator(wordSeparator);
       return params;
     }
     return null;

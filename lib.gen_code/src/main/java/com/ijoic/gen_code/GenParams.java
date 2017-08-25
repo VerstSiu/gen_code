@@ -1,7 +1,9 @@
 package com.ijoic.gen_code;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Gen Params.
@@ -9,23 +11,23 @@ import java.util.List;
  * @author VerstSiu verstsiu@126.com
  * @version 1.0
  */
-public class GenParams {
+final class GenParams {
 
-  private List<String> keyList = new ArrayList<>();
-  private String wordSeparator;
-  private List<String[]> valuesList = new ArrayList<>();
-  private List<boolean[]> multiFlagList = new ArrayList<>();
+  private final List<String[][]> valuesList = new ArrayList<>();
+  private final Map<String, Integer> keyIndexMap = new HashMap<>();
 
   /**
-   * Returns param key at specific index.
+   * Returns key index, -1 if not exist.
    *
-   * @param index index.
+   * @param key key.
    */
-  public String getParamKey(int index) {
-    if (index < 0 || index >= keyList.size()) {
-      return null;
+  final int getKeyIndex(String key) {
+    if (key == null) {
+      return -1;
     }
-    return keyList.get(index);
+    Integer index = keyIndexMap.get(key);
+
+    return index == null ? -1 : index;
   }
 
   /**
@@ -34,35 +36,19 @@ public class GenParams {
    * @param index index.
    * @param key param key.
    */
-  public void setParamKey(int index, String key) {
-    keyList.set(index, key);
-  }
-
-  /**
-   * Returns word separator.
-   */
-  public String getWordSeparator() {
-    return wordSeparator;
-  }
-
-  /**
-   * Set word separator.
-   *
-   * @param wordSeparator word separator.
-   */
-  public void setWordSeparator(String wordSeparator) {
-    this.wordSeparator = wordSeparator;
+  final void setParamKey(int index, String key) {
+    if (key != null) {
+      keyIndexMap.put(key, index);
+    }
   }
 
   /**
    * Add param values.
    *
    * @param values values.
-   * @param multiFlags multi flags.
    */
-  public void addParamValues(String[] values, boolean[] multiFlags) {
+  final void addParamValues(String[][] values) {
     valuesList.add(values);
-    multiFlagList.add(multiFlags);
   }
 
   /**
@@ -70,23 +56,24 @@ public class GenParams {
    *
    * @param index index.
    */
-  public String[] getParamValues(int index) {
+  private String[][] getParamValues(int index) {
     return FormatUtils.valueAtList(valuesList, index);
   }
 
   /**
-   * Returns multi flags at specific index.
+   * Returns param value at specific value index & key index.
    *
-   * @param index index.
+   * @param index value index.
+   * @param keyIndex key index.
    */
-  public boolean[] getMultiFlags(int index) {
-    return FormatUtils.valueAtList(multiFlagList, index);
+  final String[] getParamValue(int index, int keyIndex) {
+    return FormatUtils.valueAtArray(getParamValues(index), keyIndex);
   }
 
   /**
    * Returns values size.
    */
-  public int size() {
+  public final int size() {
     return valuesList.size();
   }
 

@@ -12,5 +12,5 @@ public interface GenRules {
    *
    * @param params params.
    */
-  String formatTextContent(String... params);
+  String[] formatTextContent(String[] params);
 }

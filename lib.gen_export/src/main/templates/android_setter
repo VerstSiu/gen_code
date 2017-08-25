@@ -1,7 +1,7 @@
-import rules little_camel_case com.ijoic.gen_code.rules.LittleCamelCase
-import rules big_camel_case com.ijoic.gen_code.rules.BigCamelCase
+R little_camel_case com.ijoic.gen_code.rules.LittleCamelCase
+R big_camel_case com.ijoic.gen_code.rules.BigCamelCase
 
-add indent 2
+I 2
 
 //
 /**

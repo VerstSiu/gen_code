@@ -1,4 +1,8 @@
 package com.ijoic.gen_export;
+
+import com.ijoic.gen_code.GenCode;
+import com.ijoic.gen_code.printer.SystemPrinter;
+
 /**
  * Gen Export.
  *
@@ -8,7 +12,10 @@ package com.ijoic.gen_export;
 public class GenExport {
 
   public static void main(String[] args) {
-    System.out.print("Hello world!!");
+    final String FILE_ROOT = "lib.gen_export/src/main/";
+
+    GenCode.loadTemplate(FILE_ROOT + "templates/getter_and_setter");
+    GenCode.execTemplate(FILE_ROOT + "params/getter_and_setter_params", new SystemPrinter());
   }
 
 }

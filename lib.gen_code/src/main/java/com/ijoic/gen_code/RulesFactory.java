@@ -9,10 +9,10 @@ import java.util.Map;
  * @author VerstSiu verstsiu@126.com
  * @version 1.0
  */
-public class RulesFactory {
+final class RulesFactory {
 
-  private static Map<String, GenRules> nameMap = new HashMap<>();
-  private static Map<String, GenRules> clazzMap = new HashMap<>();
+  private static final Map<String, GenRules> nameMap = new HashMap<>();
+  private static final Map<String, GenRules> clazzMap = new HashMap<>();
 
   /**
    * Returns rules instance.
@@ -22,7 +22,7 @@ public class RulesFactory {
    * @param rulesName rules name.
    * @param className rules class.
    */
-  public static GenRules getGenRulesInstance(String rulesName, String className) {
+  static GenRules getGenRulesInstance(String rulesName, String className) {
     GenRules ruleInstance;
 
     if (className != null) {
@@ -57,7 +57,7 @@ public class RulesFactory {
   /**
    * Release all memory resources.
    */
-  public static void releaseAll() {
+  static void releaseAll() {
     clazzMap.clear();
   }
 

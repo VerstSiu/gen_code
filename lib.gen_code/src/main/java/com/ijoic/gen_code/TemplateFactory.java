@@ -9,9 +9,21 @@ import java.util.Map;
  * @author VerstSiu verstsiu@126.com
  * @version 1.0
  */
-public class TemplateFactory {
+final class TemplateFactory {
 
-  private static Map<String, Template> templateMap = new HashMap<>();
+  private static final Map<String, Template> templateMap = new HashMap<>();
+
+  /**
+   * Returns template for specific path.
+   *
+   * @param path path.
+   */
+  static Template getTemplate(String path) {
+    if (path == null) {
+      return null;
+    }
+    return templateMap.get(path);
+  }
 
   /**
    * Add template.
@@ -19,7 +31,7 @@ public class TemplateFactory {
    * @param path path.
    * @param template template.
    */
-  public static void addTemplate(String path, Template template) {
+  static void addTemplate(String path, Template template) {
     if (path == null) {
       return;
     }
@@ -29,7 +41,7 @@ public class TemplateFactory {
   /**
    * Release all memory resources.
    */
-  public static void releaseAll() {
+  static void releaseAll() {
     templateMap.clear();
   }
 

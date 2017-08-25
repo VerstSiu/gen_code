@@ -1,11 +1,12 @@
-import rules little_camel_case com.ijoic.gen_code.rules.LittleCamelCase
-import rules big_camel_case com.ijoic.gen_code.rules.BigCamelCase
+R little_camel_case com.ijoic.gen_code.rules.LittleCamelCase
+R big_camel_case com.ijoic.gen_code.rules.BigCamelCase
+R lease com.ijoic.gen_code.rules.Lease
 
-add indent 2
+I 2
 
 //
 /**
- * Returns {$param_name}.
+ * Returns {$param_name.lease}.
  */
 public {$param_type} get{$param_name.big_camel_case}() {
   return this.{$param_name.little_camel_case};

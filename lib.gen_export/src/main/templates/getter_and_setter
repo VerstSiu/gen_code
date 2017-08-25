@@ -1,20 +1,21 @@
 R little_camel_case com.ijoic.gen_code.rules.LittleCamelCase
 R big_camel_case com.ijoic.gen_code.rules.BigCamelCase
+R lease com.ijoic.gen_code.rules.Lease
 
 I 2
 
 //
 /**
- * Returns {$param_name}.
+ * Returns {$param_name.lease}.
  */
 public {$param_type} get{$param_name.big_camel_case}() {
   return this.{$param_name.little_camel_case};
 }
 
 /**
- * Set {$param_name}
+ * Set {$param_name.lease}.
  *
- * @param {$param_name.little_camel_case} {$param_name}
+ * @param {$param_name.little_camel_case} {$param_name.lease}.
  */
 public void set{$param_name.big_camel_case}({$param_type} {$param_name.little_camel_case}) {
   this.{$param_name.little_camel_case} = {$param_name.little_camel_case};

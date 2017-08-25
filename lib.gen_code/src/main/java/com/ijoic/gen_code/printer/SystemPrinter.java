@@ -8,9 +8,9 @@ import com.ijoic.gen_code.ExportPrinter;
  * @author VerstSiu verstsiu@126.com
  * @version 1.0
  */
-public class SystemPrinter implements ExportPrinter {
+public final class SystemPrinter implements ExportPrinter {
   @Override
-  public void printMessage(String message) {
+  public final void printMessage(String message) {
     System.out.print(message);
   }
 }

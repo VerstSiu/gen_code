@@ -9,16 +9,16 @@ import java.util.Map;
  * @author VerstSiu verstsiu@126.com
  * @version 1.0
  */
-public class Template {
+final class Template {
 
   private int indent;
-  private Map<String, GenRules> rulesMap = new HashMap<>();
+  private final Map<String, GenRules> rulesMap = new HashMap<>();
   private String templateContent;
 
   /**
    * Returns indent.
    */
-  public int getIndent() {
+  final int getIndent() {
     return indent;
   }
 
@@ -27,7 +27,7 @@ public class Template {
    *
    * @param indent indent.
    */
-  public void setIndent(int indent) {
+  final void setIndent(int indent) {
     this.indent = indent;
   }
 
@@ -37,7 +37,7 @@ public class Template {
    * @param rulesName rules name.
    * @param rules rules.
    */
-  public void addRules(String rulesName, GenRules rules) {
+  final void addRules(String rulesName, GenRules rules) {
     if (rulesName == null) {
       return;
     }
@@ -49,7 +49,7 @@ public class Template {
    *
    * @param rulesName rules name.
    */
-  public GenRules getRules(String rulesName) {
+  final GenRules getRules(String rulesName) {
     if (rulesName == null) {
       return null;
     }
@@ -59,7 +59,7 @@ public class Template {
   /**
    * Returns template content.
    */
-  public String getTemplateContent() {
+  final String getTemplateContent() {
     return this.templateContent;
   }
 
@@ -68,7 +68,7 @@ public class Template {
    *
    * @param content content.
    */
-  public void setTemplateContent(String content) {
+  final void setTemplateContent(String content) {
     this.templateContent = content;
   }
 

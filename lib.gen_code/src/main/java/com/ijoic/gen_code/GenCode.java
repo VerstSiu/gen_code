@@ -7,7 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,9 +20,9 @@ import java.util.regex.Pattern;
  * @author VerstSiu verstsiu@126.com
  * @version 1.0
  */
-public class GenCode {
+public final class GenCode {
 
-  private static List<Template> templateList = new ArrayList<>();
+  private static final List<Template> templateList = new ArrayList<>();
 
   /**
    * Load template.
@@ -31,11 +33,17 @@ public class GenCode {
     if (templatePath == null) {
       return;
     }
+    Template template = TemplateFactory.getTemplate(templatePath);
+
+    if (template != null) {
+      templateList.add(template);
+      return;
+    }
     InputStream is = null;
 
     try {
       is = new FileInputStream(templatePath);
-      Template template = ParseEngine.loadTemplate(is);
+      template = ParseEngine.loadTemplate(is);
 
       if (template != null) {
         templateList.add(template);
@@ -80,29 +88,118 @@ public class GenCode {
     if (templateContent == null) {
       return;
     }
-    Scanner sc = new Scanner(templateContent);
+    Scanner sc;
     String lineContent;
     String indent = FormatUtils.genIndentText(template.getIndent());
 
-    Pattern pattern = Pattern.compile(".*\\{$([a-zA-Z]+)(\\.[a-zA-Z]+)+\\}.*");
+    Pattern pattern = Pattern.compile("\\{\\$(([a-zA-Z0-9_]+)(\\.[a-zA-Z0-9_]+)*)\\}");
     Matcher matcher;
+    int textStart;
+    int textEnd;
 
-    while (sc.hasNext()) {
-      lineContent = sc.nextLine();
+    String segmentsText;
+    String replaceText;
+    String[] segments;
+    int segmentSize;
 
-      if (lineContent == null || lineContent.isEmpty()) {
-        continue;
+    Map<String, String> replaceMap = new HashMap<>();
+    String paramKey;
+    String ruleText;
+    GenRules genRules;
+
+    String[] paramValue;
+    int valueIndex = 0;
+    int valueSize = params.size();
+    StringBuilder sb = new StringBuilder();
+
+    while (valueIndex < valueSize) {
+      sc = new Scanner(templateContent);
+      replaceMap.clear();
+
+      while (sc.hasNext()) {
+        lineContent = sc.nextLine();
+
+        if (lineContent == null) {
+          continue;
+        }
+        // append indent.
+        printer.printMessage(indent);
+        matcher = pattern.matcher(lineContent);
+        textStart = 0;
+
+        while (matcher.find()) {
+          // append text start.
+          textEnd = matcher.start();
+
+          if (textStart < textEnd) {
+            printer.printMessage(lineContent.substring(textStart, textEnd));
+          }
+
+          // append replace text.
+          segmentsText = matcher.group(1);
+
+          if (segmentsText != null && !segmentsText.isEmpty()) {
+            replaceText = replaceMap.get(segmentsText);
+
+            if (replaceText == null) {
+              segments = segmentsText.split("\\.");
+              segmentSize = segments.length;
+              replaceText = "";
+
+              if (segmentSize >= 1 && (paramKey = segments[0]) != null && !paramKey.isEmpty()) {
+                paramValue = FormatUtils.copyArray(params.getParamValue(valueIndex, params.getKeyIndex(paramKey)));
+
+                // perform rules replace.
+                for (int i = 0; i < segmentSize; ++i) {
+                  ruleText = segments[i];
+
+                  if (ruleText == null || ruleText.isEmpty()) {
+                    continue;
+                  }
+                  genRules = template.getRules(ruleText);
+
+                  if (genRules != null) {
+                    paramValue = genRules.formatTextContent(paramValue);
+                  }
+                }
+
+                // generate replace text.
+                if (paramValue != null && paramValue.length > 0) {
+                  sb.delete(0, sb.length());
+
+                  for (String valueItem : paramValue) {
+                    sb.append(valueItem);
+                  }
+                  replaceText = sb.toString();
+                }
+              }
+              replaceMap.put(segmentsText, replaceText);
+            }
+
+            // print replace text.
+            if (!replaceText.isEmpty()) {
+              printer.printMessage(replaceText);
+            }
+          }
+
+          // update text position.
+          textStart = matcher.end();
+        }
+
+        // print last text content.
+        if (textStart < lineContent.length()) {
+          printer.printMessage(lineContent.substring(textStart, lineContent.length()));
+        }
+
+        // append line end(new line).
+        printer.printMessage("\n");
       }
-      // indent.
-      printer.printMessage(indent);
 
-      matcher = pattern.matcher(lineContent);
-      if (matcher.find()) {
-        // find for replacements.
+      // append block end(new line).
+      printer.printMessage("\n");
 
-      } else {
-        printer.printMessage(lineContent);
-      }
+      // update value index.
+      ++valueIndex;
     }
   }
 
