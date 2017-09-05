@@ -13,8 +13,12 @@ import java.util.Map;
  */
 final class GenParams {
 
+  private static final int DEFAULT_BLANK_LINE = 1;
+
   private final List<String[][]> valuesList = new ArrayList<>();
   private final Map<String, Integer> keyIndexMap = new HashMap<>();
+
+  private int blankLine = DEFAULT_BLANK_LINE;
 
   /**
    * Returns key index, -1 if not exist.
@@ -75,6 +79,22 @@ final class GenParams {
    */
   public final int size() {
     return valuesList.size();
+  }
+
+  /**
+   * Returns blank line.
+   */
+  public int getBlankLine() {
+    return blankLine;
+  }
+
+  /**
+   * Set blank line.
+   *
+   * @param blankLine blank line.
+   */
+  public void setBlankLine(int blankLine) {
+    this.blankLine = blankLine;
   }
 
 }

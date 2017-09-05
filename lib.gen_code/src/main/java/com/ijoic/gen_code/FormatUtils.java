@@ -70,18 +70,19 @@ public final class FormatUtils {
   /**
    * Returns indent text.
    *
-   * @param indent indent.
+   * @param text text.
+   * @param repeatCount repeat count..
    */
   @NonNull
-  static String genIndentText(int indent) {
-    if (indent <= 0) {
+  static String repeatText(String text, int repeatCount) {
+    if (text == null || text.isEmpty() || repeatCount <= 0) {
       return "";
     }
     StringBuilder sb = new StringBuilder();
 
-    while (indent > 0) {
-      sb.append(" ");
-      --indent;
+    while (repeatCount > 0) {
+      sb.append(text);
+      --repeatCount;
     }
     return sb.toString();
   }
@@ -97,6 +98,30 @@ public final class FormatUtils {
         return text.substring(0, 1).toUpperCase();
       }
       return text.substring(0, 1).toUpperCase() + text.substring(1);
+    }
+    return text;
+  }
+
+  /**
+   * Returns text format by [upper case].
+   *
+   * @param text text.
+   */
+  public static String upperCase(String text) {
+    if (text != null && !text.isEmpty() && text.length() > 0) {
+      return text.toUpperCase();
+    }
+    return text;
+  }
+
+  /**
+   * Returns text format by [lower case].
+   *
+   * @param text text.
+   */
+  public static String lowerCase(String text) {
+    if (text != null && !text.isEmpty() && text.length() > 0) {
+      return text.toLowerCase();
     }
     return text;
   }

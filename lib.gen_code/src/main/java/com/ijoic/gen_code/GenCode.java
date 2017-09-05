@@ -90,7 +90,8 @@ public final class GenCode {
     }
     Scanner sc;
     String lineContent;
-    String indent = FormatUtils.genIndentText(template.getIndent());
+    String indent = FormatUtils.repeatText(" ", template.getIndent());
+    String blankLine = FormatUtils.repeatText("\n", params.getBlankLine());
 
     Pattern pattern = Pattern.compile("\\{\\$(([a-zA-Z0-9_]+)(\\.[a-zA-Z0-9_]+)*)\\}");
     Matcher matcher;
@@ -195,8 +196,8 @@ public final class GenCode {
         printer.printMessage("\n");
       }
 
-      // append block end(new line).
-      printer.printMessage("\n");
+      // append block end(blank line).
+      printer.printMessage(blankLine);
 
       // update value index.
       ++valueIndex;

@@ -6,5 +6,4 @@ S @
 E #
 
 //
-market@title@en String
-order@points List
+currency@text String

@@ -1,0 +1,9 @@
+R big_camel_case com.ijoic.gen_code.rules.BigCamelCase
+
+I 2
+
+//
+@Override
+protected void on{$param_name.big_camel_case}() {
+  super.on{$param_name.big_camel_case}();
+}

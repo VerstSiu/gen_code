@@ -18,6 +18,7 @@ final class ParseEngine {
 
   private static final String COMMAND_PARAM_WORD_SEPARATOR = "S";
   private static final String COMMAND_PARAM_PLACE_HOLDER = "E";
+  private static final String COMMAND_PARAM_BLANK_LINE = "B";
 
   private static final String COMMAND_PARAM_START = "//";
 
@@ -147,15 +148,25 @@ final class ParseEngine {
           continue;
         }
         if (COMMAND_PARAM_WORD_SEPARATOR.equals(runParams[0])) {
-          // load rules.
+          // load word separator.
           if (runParams.length >= 2) {
             wordSeparator = FormatUtils.replaceIfNotEmpty(wordSeparator, runParams[1]);
           }
 
         } else if (COMMAND_PARAM_PLACE_HOLDER.equals(runParams[0])) {
-          // load indent.
+          // load place holder.
           if (runParams.length >= 2) {
             placeHolder = FormatUtils.replaceIfNotEmpty(placeHolder, runParams[1]);
+          }
+
+        } else if (COMMAND_PARAM_BLANK_LINE.equals(runParams[0])) {
+          // load blank line.
+          if (runParams.length >= 2) {
+            try {
+              params.setBlankLine(Integer.parseInt(runParams[1]));
+            } catch (NumberFormatException e) {
+              e.printStackTrace();
+            }
           }
 
         } else if (COMMAND_PARAM_START.equals(runParams[0])) {
