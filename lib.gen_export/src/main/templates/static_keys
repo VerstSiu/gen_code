@@ -1,6 +1,6 @@
-R upper_case com.ijoic.gen_code.rules.UpperCase
-R lower_case com.ijoic.gen_code.rules.LowerCase
-R underline com.ijoic.gen_code.rules.Underline
+R upper_case
+R lower_case
+R underline
 
 I 2
 

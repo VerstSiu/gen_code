@@ -1,5 +1,13 @@
 package com.ijoic.gen_code;
 
+import com.ijoic.gen_code.annotation.NonNull;
+import com.ijoic.gen_code.rules.BigCamelCase;
+import com.ijoic.gen_code.rules.Lease;
+import com.ijoic.gen_code.rules.LittleCamelCase;
+import com.ijoic.gen_code.rules.LowerCase;
+import com.ijoic.gen_code.rules.Underline;
+import com.ijoic.gen_code.rules.UpperCase;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +21,15 @@ final class RulesFactory {
 
   private static final Map<String, GenRules> nameMap = new HashMap<>();
   private static final Map<String, GenRules> clazzMap = new HashMap<>();
+
+  static {
+    addDefaultGenRules("big_camel_case", BigCamelCase.class);
+    addDefaultGenRules("little_camel_case", LittleCamelCase.class);
+    addDefaultGenRules("upper_case", UpperCase.class);
+    addDefaultGenRules("lower_case", LowerCase.class);
+    addDefaultGenRules("underline", Underline.class);
+    addDefaultGenRules("lease", Lease.class);
+  }
 
   /**
    * Returns rules instance.
@@ -52,6 +69,25 @@ final class RulesFactory {
    */
   private static GenRules getDefaultGenRules(String rulesName) {
     return nameMap.get(rulesName);
+  }
+
+  /**
+   * Add default gen rules.
+   *
+   * @param rulesName rules name.
+   * @param rulesClazz rules clazz.
+   */
+  private static void addDefaultGenRules(@NonNull String rulesName, @NonNull Class<? extends GenRules> rulesClazz) {
+    GenRules ruleInstance;
+
+    try {
+      ruleInstance = rulesClazz.newInstance();
+      clazzMap.put(rulesClazz.getCanonicalName(), ruleInstance);
+      nameMap.put(rulesName, ruleInstance);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   /**
