@@ -5,16 +5,16 @@ import com.ijoic.gen_export.annotations.TemplatePath;
 import com.ijoic.gen_export.utils.ExportUtils;
 
 /**
- * Static keys.
+ * Getter and Setter.
  *
  * @author VerstSiu verstsiu@126.com
  * @version 1.0
  */
-@TemplatePath("templates/static_keys")
-@ParamPath("params/static_keys")
-public class StaticKeys {
+@TemplatePath("templates/getter_and_setter")
+@ParamPath("params/getter_and_setter_params")
+public class GetterAndSetter {
 
   public static void main(String[] args) {
-    ExportUtils.execSimple(StaticKeys.class);
+    ExportUtils.execSimple(GetterAndSetter.class);
   }
 }
