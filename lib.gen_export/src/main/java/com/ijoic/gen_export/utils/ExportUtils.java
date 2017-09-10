@@ -41,8 +41,8 @@ public class ExportUtils {
   private static void execSimple(@NonNull String templatePath, @NonNull String paramPath) {
     final String FILE_ROOT = "lib.gen_export/src/main/";
 
-    GenCode.loadTemplate(FILE_ROOT + "templates/getter_and_setter");
-    GenCode.execTemplate(FILE_ROOT + "params/getter_and_setter_params", new SystemPrinter());
+    GenCode.loadTemplate(FILE_ROOT + templatePath);
+    GenCode.execTemplate(FILE_ROOT + paramPath, new SystemPrinter());
   }
 
   @Nullable
