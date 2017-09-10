@@ -50,7 +50,7 @@ public class ExportUtils {
     T annotation = execClazz.getAnnotation(annClazz);
 
     if (annotation != null) {
-      readStringValue(annotation);
+      return readStringValue(annotation);
     }
     return null;
   }
