@@ -54,7 +54,7 @@ Generate code project for AndroidStudio as java project.
     @ParamPath("params/getter_and_setter_params")
     public class GetterAndSetter {
     
-    public static void main(String[] args) {
+      public static void main(String[] args) {
         ExportUtils.execSimple(GetterAndSetter.class);
       }
     }
@@ -164,6 +164,31 @@ Template Begin:
 ```
 
 //
+
+```
+
+## Rules Map
+
+Simple case:
+
+|Name             |Input    |Output   |
+|:----------------|:--------|:--------|
+|little_camel_case|user name|userName |
+|big_camel_case   |user name|UserName |
+|upper_case       |user name|USERNAME |
+|lower_case       |user name|username |
+|underline        |user name|user_name|
+|lease            |user name|user name|
+
+Combination:
+
+```java
+
+// .upper_case.lease
+USER NAME
+
+// .upper_case.underline
+USER_NAME
 
 ```
 
