@@ -6,4 +6,5 @@ S @
 E #
 
 //
-currency@text String
+name String
+age int
