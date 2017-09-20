@@ -1,16 +1,19 @@
-package com.ijoic.gen_code;
+package com.ijoic.gen_code.io;
+
+import com.ijoic.gen_code.annotation.Nullable;
 
 /**
- * Export printer.
+ * Generate printer.
  *
  * @author VerstSiu verstsiu@126.com
  * @version 1.0
  */
-public interface ExportPrinter {
+public interface GenPrinter extends StateCompat {
   /**
    * Print message.
    *
    * @param message message.
    */
+  @Nullable
   void printMessage(String message);
 }

@@ -1,9 +1,10 @@
 package com.ijoic.gen_code;
 
 import com.ijoic.gen_code.annotation.NonNull;
-import com.ijoic.gen_code.rules.BigCamelCase;
+import com.ijoic.gen_code.rules.UpperCamelCase;
+import com.ijoic.gen_code.rules.FirstLetterUpperCase;
 import com.ijoic.gen_code.rules.Lease;
-import com.ijoic.gen_code.rules.LittleCamelCase;
+import com.ijoic.gen_code.rules.LowerCamelCase;
 import com.ijoic.gen_code.rules.LowerCase;
 import com.ijoic.gen_code.rules.Underline;
 import com.ijoic.gen_code.rules.UpperCase;
@@ -23,12 +24,13 @@ final class RulesFactory {
   private static final Map<String, GenRules> clazzMap = new HashMap<>();
 
   static {
-    addDefaultGenRules("big_camel_case", BigCamelCase.class);
-    addDefaultGenRules("little_camel_case", LittleCamelCase.class);
+    addDefaultGenRules("upper_camel_case", UpperCamelCase.class);
+    addDefaultGenRules("lower_camel_case", LowerCamelCase.class);
     addDefaultGenRules("upper_case", UpperCase.class);
     addDefaultGenRules("lower_case", LowerCase.class);
     addDefaultGenRules("underline", Underline.class);
     addDefaultGenRules("lease", Lease.class);
+    addDefaultGenRules("first_letter_upper_case", FirstLetterUpperCase.class);
   }
 
   /**

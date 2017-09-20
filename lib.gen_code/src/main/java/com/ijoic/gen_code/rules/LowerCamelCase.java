@@ -4,12 +4,12 @@ import com.ijoic.gen_code.FormatUtils;
 import com.ijoic.gen_code.GenRules;
 
 /**
- * Big Camel Case.
+ * Lower Camel Case.
  *
  * @author VerstSiu verstsiu@126.com
  * @version 1.0
  */
-public final class LittleCamelCase implements GenRules {
+public final class LowerCamelCase implements GenRules {
   @Override
   public final String[] formatTextContent(String[] params) {
     if (params != null) {

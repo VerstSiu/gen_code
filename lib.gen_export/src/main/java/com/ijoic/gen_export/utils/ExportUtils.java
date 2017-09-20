@@ -3,7 +3,7 @@ package com.ijoic.gen_export.utils;
 import com.ijoic.gen_code.GenCode;
 import com.ijoic.gen_code.annotation.NonNull;
 import com.ijoic.gen_code.annotation.Nullable;
-import com.ijoic.gen_code.printer.SystemPrinter;
+import com.ijoic.gen_code.io.printer.SystemPrinter;
 import com.ijoic.gen_export.annotations.ParamPath;
 import com.ijoic.gen_export.annotations.TemplatePath;
 

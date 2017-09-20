@@ -1,0 +1,9 @@
+R upper_case
+R underline
+R lease
+
+I 6
+
+//
+case MSG_{$param_name.upper_case.underline}:
+  return R.string.login_msg_{$param_name.underline};

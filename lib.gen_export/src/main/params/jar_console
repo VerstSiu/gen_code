@@ -1,0 +1,15 @@
+0 param_name
+1 param_value
+
+S @
+
+E #
+
+B 1
+
+//
+attach 1
+create@view 1
+activity@created 1
+destroy@view 1
+detach 1

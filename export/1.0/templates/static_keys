@@ -1,0 +1,8 @@
+R upper_case
+R lower_case
+R underline
+
+I 2
+
+//
+private static final String KEY_{$param_name.upper_case.underline} = "{$param_name.lower_case}";

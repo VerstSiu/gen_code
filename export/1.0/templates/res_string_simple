@@ -1,0 +1,8 @@
+R upper_camel_case
+R underline
+R lease
+
+I 2
+
+//
+<string name="login_msg_{$param_name.underline}">{$param_name.upper_camel_case.lease}</string>

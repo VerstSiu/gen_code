@@ -1,0 +1,12 @@
+R upper_case
+R lower_case
+R underline
+R lease
+
+I 2
+
+//
+/**
+ * {$param_name.lower_case.lease}.
+ */
+String {$param_name.upper_case.underline} = "{$param_name.lower_case.underline}";

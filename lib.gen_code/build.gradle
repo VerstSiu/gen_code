@@ -4,5 +4,11 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.ijoic.gen_code.GenCode'
+    }
+}
+
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"

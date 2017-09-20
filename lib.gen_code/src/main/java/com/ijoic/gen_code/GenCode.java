@@ -1,11 +1,13 @@
 package com.ijoic.gen_code;
 
 import com.ijoic.gen_code.annotation.NonNull;
+import com.ijoic.gen_code.annotation.Nullable;
+import com.ijoic.gen_code.io.GenPrinter;
+import com.ijoic.gen_code.io.GenScanner;
+import com.ijoic.gen_code.io.printer.FilePrinter;
+import com.ijoic.gen_code.io.printer.SystemPrinter;
+import com.ijoic.gen_code.io.scanner.FileScanner;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +27,33 @@ public final class GenCode {
   private static final List<Template> templateList = new ArrayList<>();
 
   /**
+   * Main entrance.
+   *
+   * <p>Argument list; template_path, param_path, output_path</p>
+   *
+   * @param args arguments.
+   */
+  public static void main(String[] args) {
+    int argumentSize = args.length;
+
+    if (argumentSize >= 2) {
+      String templatePath = args[0];
+      String paramPath = args[1];
+
+      if (argumentSize == 2) {
+        loadTemplate(templatePath);
+        execTemplate(paramPath, new SystemPrinter());
+
+      } else {
+        String outputPath = args[2];
+
+        loadTemplate(templatePath);
+        execTemplate(paramPath, new FilePrinter(outputPath));
+      }
+    }
+  }
+
+  /**
    * Load template.
    *
    * @param templatePath template path.
@@ -33,33 +62,21 @@ public final class GenCode {
     if (templatePath == null) {
       return;
     }
+
+    // load template from cache.
     Template template = TemplateFactory.getTemplate(templatePath);
 
     if (template != null) {
       templateList.add(template);
       return;
     }
-    InputStream is = null;
 
-    try {
-      is = new FileInputStream(templatePath);
-      template = ParseEngine.loadTemplate(is);
+    // load template from file.
+    template = ParseEngine.loadTemplate(new FileScanner(templatePath));
 
-      if (template != null) {
-        templateList.add(template);
-        TemplateFactory.addTemplate(templatePath, template);
-      }
-
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
-
-    if (is != null) {
-      try {
-        is.close();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+    if (template != null) {
+      templateList.add(template);
+      TemplateFactory.addTemplate(templatePath, template);
     }
   }
 
@@ -68,22 +85,36 @@ public final class GenCode {
    *
    * @param paramPath param path.
    */
-  public static void execTemplate(String paramPath, ExportPrinter printer) {
+  public static void execTemplate(String paramPath, GenPrinter printer) {
     GenParams genParams;
 
     if (printer == null || (genParams = loadGenParams(paramPath)) == null) {
       return;
     }
+    printer.init();
+    int i = 0;
+    int templateSize = templateList.size();
+
     for (Template template : templateList) {
       if (template == null) {
         continue;
       }
-      execTemplate(template, genParams, printer);
+      execTemplate(template, genParams, printer, i, templateSize);
+      ++i;
     }
+    printer.destroy();
   }
 
-  private static void execTemplate(@NonNull Template template, @NonNull GenParams params, @NonNull ExportPrinter printer) {
+  private static void execTemplate(
+      @NonNull Template template,
+      @NonNull GenParams params,
+      @NonNull GenPrinter printer,
+      int templateIndex,
+      int templateSize) {
+
     String templateContent = template.getTemplateContent();
+    boolean isFirstTemplate = templateIndex == 0;
+    boolean isLastTemplate = templateIndex == templateSize - 1;
 
     if (templateContent == null) {
       return;
@@ -113,7 +144,15 @@ public final class GenCode {
     int valueSize = params.size();
     StringBuilder sb = new StringBuilder();
 
+    // !!print extra blank line for first template.
+    if (isFirstTemplate) {
+      printer.printMessage("\n\n");
+    }
+
+    boolean isLastValue;
+
     while (valueIndex < valueSize) {
+      isLastValue = valueIndex == valueSize - 1;
       sc = new Scanner(templateContent);
       replaceMap.clear();
 
@@ -197,36 +236,23 @@ public final class GenCode {
       }
 
       // append block end(blank line).
-      printer.printMessage(blankLine);
+      // !!skip extra blank line for last template.
+      if (!isLastTemplate || !isLastValue) {
+        printer.printMessage(blankLine);
+      }
 
       // update value index.
       ++valueIndex;
     }
   }
 
+  @Nullable
   private static GenParams loadGenParams(String paramPath) {
     if (paramPath == null) {
       return null;
     }
-    InputStream is = null;
-    GenParams genParams = null;
-
-    try {
-      is = new FileInputStream(paramPath);
-      genParams = ParseEngine.loadParams(is);
-
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
-
-    if (is != null) {
-      try {
-        is.close();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    return genParams;
+    GenScanner scanner = new FileScanner(paramPath);
+    return ParseEngine.loadParams(scanner);
   }
 
   /**

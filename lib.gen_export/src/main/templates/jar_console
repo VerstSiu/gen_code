@@ -1,0 +1,13 @@
+R upper_camel_case
+R upper_case
+R underline
+R lease
+R first_letter_upper_case
+
+I 2
+
+//
+/**
+ * {$param_name.first_letter_upper_case.lease}.
+ */
+int {$param_name.upper_case.underline} = 0x01{$param_value}0;

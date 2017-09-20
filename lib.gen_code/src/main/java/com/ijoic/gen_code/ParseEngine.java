@@ -1,7 +1,7 @@
 package com.ijoic.gen_code;
 
-import java.io.InputStream;
-import java.util.Scanner;
+import com.ijoic.gen_code.annotation.NonNull;
+import com.ijoic.gen_code.io.GenScanner;
 
 /**
  * Gen Code.
@@ -29,15 +29,11 @@ final class ParseEngine {
   /**
    * Returns loaded template.
    *
-   * @param is input stream.
+   * @param scanner scanner.
    */
-  static Template loadTemplate(InputStream is) {
-    if (is == null) {
-      return null;
-    }
+  static Template loadTemplate(@NonNull GenScanner scanner) {
     Template template = new Template();
 
-    Scanner sc = new Scanner(is);
     String lineContent;
     StringBuilder templateBuilder = new StringBuilder();
     int lineCount = 0;
@@ -45,8 +41,11 @@ final class ParseEngine {
     boolean templateStart = false;
     String[] runParams;
 
-    while (sc.hasNext()) {
-      lineContent = sc.nextLine();
+    // init scanner
+    scanner.init();
+
+    while (scanner.hasNext()) {
+      lineContent = scanner.nextLine();
 
       if (!templateStart) {
         if (lineContent == null || lineContent.isEmpty()) {
@@ -90,6 +89,9 @@ final class ParseEngine {
       }
     }
 
+    // destroy scanner
+    scanner.destroy();
+
     if (lineCount > 0) {
       template.setTemplateContent(templateBuilder.toString());
       return template;
@@ -114,15 +116,13 @@ final class ParseEngine {
   /**
    * Returns loaded params.
    *
-   * @param is input stream.
+   * @param scanner scanner.
    */
-  static GenParams loadParams(InputStream is) {
-    if (is == null) {
+  static GenParams loadParams(@NonNull GenScanner scanner) {
+    if (scanner == null) {
       return null;
     }
     GenParams params = new GenParams();
-
-    Scanner sc = new Scanner(is);
     String lineContent;
 
     boolean paramStart = false;
@@ -135,8 +135,11 @@ final class ParseEngine {
     String wordSeparator = DEFAULT_WORD_SEPARATOR;
     String placeHolder = DEFAULT_PLACE_HOLDER;
 
-    while (sc.hasNext()) {
-      lineContent = sc.nextLine();
+    // init scanner
+    scanner.init();
+
+    while (scanner.hasNext()) {
+      lineContent = scanner.nextLine();
 
       if (!paramStart) {
         if (lineContent == null || lineContent.isEmpty()) {
@@ -205,6 +208,9 @@ final class ParseEngine {
         }
       }
     }
+
+    // destroy scanner
+    scanner.init();
 
     if (params.size() > 0) {
       return params;
